@@ -89,11 +89,11 @@ function Checklist({ me }) {
 
   return (
     <section className="card">
-      <h2>Checklist</h2>
+      <h2>Cookout Checklist</h2>
       <div className="add">
         <input
           value={text}
-          placeholder="Add an item…"
+          placeholder="Add something to bring…"
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && add()}
         />
@@ -102,7 +102,7 @@ function Checklist({ me }) {
       {!loaded ? (
         <p className="muted">Loading…</p>
       ) : rows.length === 0 ? (
-        <p className="muted">Nothing yet — add the first item.</p>
+        <p className="muted">Nothing yet — add the first thing to bring.</p>
       ) : (
         <ul className="rows">
           {rows.map((x) => (
@@ -170,7 +170,7 @@ function App() {
   if (!me) {
     return (
       <div className="gate">
-        <h1>Shared Board</h1>
+        <h1>🎆 4th of July Board</h1>
         <p className="muted">Pick a display name so others know who's editing.</p>
         <NamePrompt onSet={(n) => { localStorage.setItem('board:name', n); setMe(n); }} />
       </div>
@@ -180,7 +180,7 @@ function App() {
   return (
     <>
       <header className="topbar">
-        <h1>Shared Board</h1>
+        <h1>🎆 4th of July Board</h1>
         <span className="me">
           {me}{' '}
           <button
@@ -196,7 +196,7 @@ function App() {
         <Notes me={me} />
       </main>
       <footer className="muted">
-        No login — everyone with this URL shares the same board. Built on Cloudflare Workers + KV.
+        No login — everyone with this link shares the same board. Happy 4th! 🇺🇸 Built on Cloudflare Workers + KV.
       </footer>
     </>
   );

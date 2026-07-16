@@ -3,44 +3,61 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Shared Board</title>
+    <title>4th of July Board</title>
     <style>
       :root {
         color-scheme: light dark;
-        --bg: #fafaf8; --fg: #1a1a1a; --muted: #6b7280; --border: #e5e7eb;
-        --card: #ffffff; --accent: #0f766e; --accent-fg: #ffffff;
+        /* Old Glory flag colors */
+        --red: #b22234;
+        --navy: #3c3b6e;
+        --bg: #fbf8f2; --fg: #1b2340; --muted: #6b6f86; --border: #e6ddcd;
+        --card: #ffffff; --accent: #b22234; --accent-fg: #ffffff;
+        --star: #3c3b6e;
         --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       }
       @media (prefers-color-scheme: dark) {
         :root {
-          --bg: #121210; --fg: #e7e5e4; --muted: #9ca3af; --border: #292524;
-          --card: #1c1917; --accent: #2dd4bf; --accent-fg: #121210;
+          --red: #e2565f; --navy: #8a8ad6;
+          --bg: #0d1530; --fg: #eef1fb; --muted: #97a0c0; --border: #24305a;
+          --card: #16204a; --accent: #d33d4c; --accent-fg: #ffffff;
+          --star: #cfd6f2;
         }
       }
       * { box-sizing: border-box; margin: 0; }
+      /* Tricolor bunting stripe across the very top */
+      body::before {
+        content: ""; display: block; height: 4px;
+        background: linear-gradient(90deg, var(--red) 0 33.3%, #ffffff 33.3% 66.6%, var(--navy) 66.6% 100%);
+      }
       body { background: var(--bg); color: var(--fg); font-family: var(--font); line-height: 1.5; }
       .topbar, main, footer, .gate { width: min(40rem, 100% - 2rem); margin-inline: auto; }
       .topbar { display: flex; align-items: baseline; justify-content: space-between; padding: 1.5rem 0 0.5rem; }
-      .topbar h1 { font-size: 1.4rem; letter-spacing: -0.02em; }
+      .topbar h1 { font-size: 1.5rem; letter-spacing: -0.02em; color: var(--navy); }
       .me { color: var(--muted); font-size: 0.9rem; }
       main { display: grid; gap: 1rem; padding-block: 1rem; }
-      .gate { padding-top: 4rem; }
-      .gate h1 { font-size: 1.8rem; }
-      .card { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.1rem 1.25rem; }
-      .card h2 { font-size: 1.05rem; margin-bottom: 0.75rem; }
+      .gate { padding-top: 4rem; text-align: center; }
+      .gate h1 { font-size: 2rem; color: var(--navy); }
+      .gate .add { max-width: 22rem; margin-inline: auto; }
+      .card { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.1rem 1.25rem; box-shadow: 0 1px 2px rgba(27, 35, 64, 0.04); }
+      .card h2 { font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--navy); display: flex; align-items: center; gap: 0.5rem; }
+      .card h2::before { content: "★"; color: var(--red); font-size: 0.9em; }
       .add { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; }
       .add input { flex: 1; padding: 0.5rem 0.7rem; border: 1px solid var(--border); border-radius: 0.5rem; background: var(--bg); color: var(--fg); font: inherit; }
+      .add input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
       button { border: none; border-radius: 0.5rem; padding: 0.5rem 0.9rem; background: var(--accent); color: var(--accent-fg); font: inherit; font-weight: 600; cursor: pointer; }
+      button:hover { filter: brightness(1.05); }
       button.link { background: none; color: var(--accent); padding: 0; font-weight: 400; text-decoration: underline; }
       .rows { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
       .rows li { display: flex; align-items: center; gap: 0.6rem; padding: 0.35rem 0; border-top: 1px solid var(--border); }
       .rows li:first-child { border-top: none; }
       .rows label { display: flex; align-items: center; gap: 0.5rem; flex: 1; cursor: pointer; }
+      .rows input[type="checkbox"] { accent-color: var(--accent); width: 1.05rem; height: 1.05rem; }
       .rows li.done span { text-decoration: line-through; color: var(--muted); }
       .by { color: var(--muted); font-size: 0.8rem; }
       .del { background: none; color: var(--muted); font-size: 1.2rem; line-height: 1; padding: 0 0.25rem; }
+      .del:hover { color: var(--red); filter: none; }
       .muted { color: var(--muted); font-size: 0.9rem; }
-      footer { padding: 1.5rem 0 3rem; font-size: 0.85rem; }
+      footer { padding: 1.5rem 0 3rem; font-size: 0.85rem; text-align: center; }
     </style>
   </head>
   <body>
