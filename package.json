@@ -1,0 +1,19 @@
+{
+  "name": "cf-board",
+  "version": "1.0.0",
+  "private": true,
+  "description": "No-login shared board on Cloudflare Workers + KV — a reusable template",
+  "scripts": {
+    "build": "esbuild src/app.jsx --bundle --minify --format=iife --loader:.jsx=jsx --jsx=automatic --outfile=public/app.js",
+    "dev": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0",
+    "wrangler": "^4.0.0"
+  }
+}

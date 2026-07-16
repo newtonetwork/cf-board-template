@@ -1,0 +1,59 @@
+name = "cf-board"
+main = "worker.js"
+compatibility_date = "2025-06-01"
+
+# Runs before every deploy (local `wrangler deploy` AND Cloudflare Workers Builds
+# CI), so public/app.js is always freshly bundled from src/app.jsx. One source of
+# truth — no need to remember to build first.
+[build]
+command = "npm run build"
+
+# The app (public/index.html + app.js) is served as static assets; the Worker
+# handles /api/* and falls through to these for everything else.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+
+# Shared board state lives here. Create the namespace, then paste the printed id:
+#   wrangler kv namespace create BOARD
+[[kv_namespaces]]
+binding = "BOARD"
+id = "<your-kv-namespace-id>"
+
+# Edge rate limiting (free). namespace_id is just a unique integer per limiter
+# within THIS Worker — not a resource you create. period is 10 or 60.
+# API_LIMITER caps total /api hits per IP (shields the KV read quota); WRITE_LIMITER
+# caps writes per IP (shields the 1k/day KV free-tier write quota). Both invisible
+# to users. Delete both blocks if you don't want rate limiting — the Worker treats
+# the bindings as optional.
+[[ratelimits]]
+name = "API_LIMITER"
+namespace_id = "1001"
+simple = { limit = 240, period = 60 }
+
+[[ratelimits]]
+name = "WRITE_LIMITER"
+namespace_id = "1002"
+simple = { limit = 20, period = 60 }
+
+# Hourly backup: fires the Worker's scheduled() handler, which snapshots every
+# board section into a timestamped `bkp:` KV key (keeps ~2 days, prunes the rest).
+# Runs in Cloudflare's cloud 24/7 — independent of any local machine. Remove this
+# block if you don't need backups.
+[triggers]
+crons = ["0 * * * *"]
+
+[vars]
+# Namespaces KV keys, so one Worker + KV namespace can host multiple boards.
+BOARD_ID = "demo"
+# Optional light gate: uncomment + set, and the app must send the same value as
+# X-Board-Key. The Worker enforces it only when this is set.
+# BOARD_KEY = "some-shared-secret"
+
+# Optional: serve on your own domain. If the zone is on your Cloudflare account,
+# deploying auto-creates the DNS record + TLS cert. Otherwise you get a
+# <name>.<subdomain>.workers.dev URL for free.
+# [[routes]]
+# pattern = "board.example.com"
+# custom_domain = true
