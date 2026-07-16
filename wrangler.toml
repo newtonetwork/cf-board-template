@@ -15,11 +15,13 @@ directory = "./public"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
 
-# Shared board state lives here. Create the namespace, then paste the printed id:
+# Shared board state lives here. If you're cloning this as a template, create your
+# OWN namespace and replace the id below (the committed id is the live demo's, and
+# only works from the owner's Cloudflare account):
 #   wrangler kv namespace create BOARD
 [[kv_namespaces]]
 binding = "BOARD"
-id = "<your-kv-namespace-id>"
+id = "6fcbf432fa534aab8e80f6a20a4f48c4"
 
 # Edge rate limiting (free). namespace_id is just a unique integer per limiter
 # within THIS Worker — not a resource you create. period is 10 or 60.

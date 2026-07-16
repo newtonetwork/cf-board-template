@@ -5,8 +5,10 @@ app **and** a KV-backed API; everyone who opens the URL sees the same live board
 No accounts, no database server, no build pipeline beyond `wrangler deploy`.
 
 This is a genericized, reusable template extracted from a family trip board I run
-in production. It ships with two demo sections — a **Checklist** and a **Notes**
-board — that you can rename, extend, or replace.
+in production. It ships as a tabbed, 4th-of-July-themed cookout board with five
+sections you can rename, extend, or replace: **Potluck**, **Supplies**, and
+**Gear** (claimable item lists with filters and search), **Guests** (RSVP
+headcount), and **Schedule** (day-keyed events with "who's going" RSVPs).
 
 ```
 cf-board/
@@ -21,8 +23,8 @@ cf-board/
 - **One Worker does everything.** It serves the static React app via Workers
   static assets and exposes a tiny JSON API (`GET`/`PUT /api/kv/:key`) backed by
   Workers KV. State is a handful of JSON documents — no SQL, no server to run.
-- **Sections are KV keys.** Each part of the board (`board:list:v1`,
-  `board:notes:v1`, …) is one key, namespaced by `BOARD_ID` so one Worker + KV
+- **Sections are KV keys.** Each part of the board (`board:potluck:v1`,
+  `board:events:v1`, …) is one key, namespaced by `BOARD_ID` so one Worker + KV
   namespace can host many independent boards.
 - **Read-merge-write, not overwrite.** The app fetches the latest copy of a
   section, applies your edit, and writes it back — so concurrent edits to

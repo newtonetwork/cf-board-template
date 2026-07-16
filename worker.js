@@ -26,7 +26,7 @@ const MAX_BODY = 1_000_000; // 1 MB per section, well under KV's 25 MB value lim
 
 // The board sections to snapshot on the scheduled cron (see [triggers] in
 // wrangler.toml). Keep this in sync with the SECTIONS your app writes.
-const SECTIONS = ['board:list:v1', 'board:notes:v1'];
+const SECTIONS = ['board:potluck:v1', 'board:supplies:v1', 'board:gear:v1', 'board:guests:v1', 'board:events:v1'];
 const BKP_PREFIX = 'bkp:'; // backup keys live in the same namespace, outside the board:: prefix
 const BKP_KEEP = 48;       // keep ~2 days of hourly snapshots
 
